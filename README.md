@@ -78,3 +78,7 @@ Geospatial Metadata Integration
 Higher Resolution for Enhanced Detail
 
     Increasing the resolution of input images allows for capturing finer details, leading to the detection of more keypoints. This is especially useful in areas where smaller features need to be identified for accurate matching.
+
+Resulted images:
+![matched_images_result_4](https://github.com/user-attachments/assets/35a0ac40-d63d-4026-8a0b-06ec68ff7681)
+

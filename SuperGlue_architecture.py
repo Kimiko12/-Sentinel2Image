@@ -76,13 +76,8 @@ class AttentionalPropagation(nn.Module):
         nn.init.constant_(self.mlp[-1].bias, 0.0)
 
     def forward(self, x: torch.Tensor, source: torch.Tensor) -> torch.Tensor:
-        # Основной вызов многоголового attention:
         message = self.attn(x, source, source)
-
-        # Склеиваем исходные фичи x и пропущенные через attention фичи message
         return self.mlp(torch.cat([x, message], dim=1))
-
-
 
 
 class AttentionalGNN(nn.Module):
@@ -95,7 +90,7 @@ class AttentionalGNN(nn.Module):
         for layer, name in zip(self.layers, self.names):
             if name == 'cross':
                 src0, src1 = desc1, desc0
-            else:  # "self"
+            else: 
                 src0, src1 = desc0, desc1
             delta0 = layer(desc0, src0)
             delta1 = layer(desc1, src1)
@@ -169,9 +164,6 @@ class SuperGlue(nn.Module):
 
     @classmethod
     def from_local_weights(cls, path_to_weights: str, config=None, device='cpu'):
-        """
-        Создаём SuperGlue и загружаем state_dict из локального файла .pth
-        """
         model = cls(config)
         state_dict = torch.load(path_to_weights, map_location=device)
         model.load_state_dict(state_dict)
@@ -179,21 +171,19 @@ class SuperGlue(nn.Module):
 
     def forward(self, data):
         """ 
-        Ожидается, что data содержит:
           - descriptors0: (B, D, N)
           - descriptors1: (B, D, M)
           - keypoints0:   (B, N, 2)
           - keypoints1:   (B, M, 2)
           - scores0:      (B, N)
           - scores1:      (B, M)
-          - image0, image1: тензоры размера (B,3,H,W) или (B,1,H,W), чтобы .shape работало
+          - image0, image1: tensors with shapes: (B,3,H,W) or (B,1,H,W)
         """
         desc0, desc1 = data['descriptors0'], data['descriptors1']
         kpts0, kpts1 = data['keypoints0'], data['keypoints1']
         scores0, scores1 = data['scores0'], data['scores1']
         image0, image1 = data['image0'], data['image1']
 
-        # Если нет ключевых точек, возвращаем пустые матчи:
         if kpts0.shape[1] == 0 or kpts1.shape[1] == 0:
             shape0, shape1 = kpts0.shape[:-1], kpts1.shape[:-1]
             return {
@@ -202,29 +192,21 @@ class SuperGlue(nn.Module):
                 'matching_scores0': kpts0.new_zeros(shape0),
                 'matching_scores1': kpts1.new_zeros(shape1),
             }
-
-        # Нормализация координат ключевых точек
         kpts0 = normalize_keypoints(kpts0, image0.shape)
         kpts1 = normalize_keypoints(kpts1, image1.shape)
 
-        # Эмбеддинг (MLP) keypoints + scores
         desc0 = desc0 + self.kenc(kpts0, scores0)
         desc1 = desc1 + self.kenc(kpts1, scores1)
 
-        # Пропускаем через GNN
         desc0, desc1 = self.gnn(desc0, desc1)
 
-        # Финальный projection-слой
         mdesc0, mdesc1 = self.final_proj(desc0), self.final_proj(desc1)
 
-        # Скалярное произведение дескрипторов (для подобия)
         scores = torch.einsum('bdn,bdm->bnm', mdesc0, mdesc1)
         scores = scores / self.config['descriptor_dim']**0.5
 
-        # ОТП (Optimal Transport) в log-пространстве
         scores = log_optimal_transport(scores, self.bin_score, iters=self.config['sinkhorn_iterations'])
 
-        # Получаем матчи
         max0, max1 = scores[:, :-1, :-1].max(2), scores[:, :-1, :-1].max(1)
         indices0, indices1 = max0.indices, max1.indices
         mutual0 = arange_like(indices0, 1)[None] == indices1.gather(1, indices0)

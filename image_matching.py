@@ -145,7 +145,6 @@ class ImageMatching:
         canvas_height = max(target_height, similar_height)
         canvas = Image.new("RGB", (canvas_width, canvas_height), (255, 255, 255))
         
-        # Размещаем изображения рядом
         canvas.paste(target_image, (0, 0))
         canvas.paste(similar_image, (target_width, 0))
         
@@ -163,7 +162,6 @@ class ImageMatching:
                 x1, y1 = similar_keypoints_scaled[match]
                 draw.line([(x0, y0), (x1 + target_width, y1)], fill="green", width=1)
         
-        # Сохранение результата
         result_path = "matched_images_result_scaled.jpg"
         canvas.save(result_path)
         logging.info(f"Image with keypoints and matches saved to {result_path}")

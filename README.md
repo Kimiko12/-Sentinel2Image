@@ -56,7 +56,7 @@ Sentinel-2 images are provided in the `.SAFE` format containing `.jp2` (JPEG 200
    ```  
 
 4. **Preprocess Images**  
-   Run the preprocessing script to convert `.jp2` files into raster `.jpeg` images
+   Run the preprocessing script `data_preprocess.py` to convert `.jp2` files into raster `.jpeg` images
 
 5. **Feature Extraction with SuperPoint**  
    Run the `SuperPoint.py` script to generate keypoints and descriptors from the preprocessed images

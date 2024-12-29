@@ -142,23 +142,29 @@ class SuperPoint:
 
 
 if __name__ == '__main__':
+    # Folder with transfered data in jpg images
     dataset_path = '/home/nikolay/test_task_quantum/Sentinel_2_image/data'
+    # Folder for saving descriptors and keypoints from images
     output_path = '/home/nikolay/test_task_quantum/Sentinel_2_image/data_superpoints'
     model_name_or_path = 'magic-leap-community/superpoint'
 
+    # For visualizing generated keypoints, you can input path to same image and path to saving output image with overlapping  keypoints 
     image_path="/home/nikolay/test_task_quantum/Sentinel_2_image/data/L1C_T36UXA_A007240_20180726T084437/T36UXA_20180726T084009_B01.jpg",
     output_path="/home/nikolay/test_task_quantum/Sentinel_2_image/output/T36UXA_20180726T084009_B01"
-    
+
+    # Create instance of class 
     extractor = SuperPoint(
         model_name_or_path=model_name_or_path,
         device=device
     )
 
+    # Function for extract keypoints with descriptors
     extractor.process_dataset(
         dataset_path=dataset_path, 
         output_path=output_path
     )
 
+    # Function for plot keypoints
     extractor.visualize_keypoints(
     image_path="/home/nikolay/test_task_quantum/Sentinel_2_image/data/L1C_T36UXA_A007240_20180726T084437/T36UXA_20180726T084009_B01.jpg",
     output_path="/home/nikolay/test_task_quantum/Sentinel_2_image/output/T36UXA_20180726T084009_B01"

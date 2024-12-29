@@ -170,13 +170,17 @@ class ImageMatching:
 # Take as input image and find in folder the most compatible image with the highest number of matches
 
 if __name__ == '__main__':
+    # Path to localy saved model weights
     model_weights_path = '/home/nikolay/test_task_quantum/Sentinel_2_image/SuperGlue_Weights/superglue_indoor.pth'
 
+    # Create instance of class 
     matcher = ImageMatching(model_weights_path=model_weights_path, device=device)
 
+    # Input path to desc and kpts in .npz extension for interested image and folder with other image desc
     target_descriptor_path = '/home/nikolay/test_task_quantum/Sentinel_2_image/data_superpoints/T36UXA_20180726T084009_B02.npz'
     folder_with_descriptors = '/home/nikolay/test_task_quantum/Sentinel_2_image/data_superpoints'
 
+    # Find the most similar image to the provided one and plot two concatenated images with keypoints marked and connected by lines
     best_match = matcher.match_with_the_most_compatible_image(
         target_descriptor_path=target_descriptor_path,
         folder_with_descriptors=folder_with_descriptors

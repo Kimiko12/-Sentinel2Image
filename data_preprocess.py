@@ -96,7 +96,9 @@ class SentinelDataPreprocess:
             return image_uint8
         
 if __name__ == '__main__':
+    # Input path to raw data (unzipped) folder with files in .SAFE format
     input_data_path = '/mnt/c/Users/kolak/Downloads/archive'
+    # Output path to transfered into .jpg format images
     output_data_path = '/home/nikolay/test_task_quantum/Sentinel_2_image/data'
 
     data_preparation = SentinelDataPreprocess(

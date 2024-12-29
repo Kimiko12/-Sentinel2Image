@@ -65,19 +65,19 @@ Sentinel-2 images are provided in the `.SAFE` format containing `.jp2` (JPEG 200
    Finally, input the keypoints, descriptors, and paths to the images into the `inference.py` script to obtain the final matching results
 
 ---
-**Future Improvements**
-Multi-Spectral Image Support
+### Future Improvements  
 
-    Integrate the capability to process and match multi-spectral data from Sentinel-2, leveraging its multiple bands (e.g., Red, Green, Blue, Near-Infrared) for more accurate feature extraction and matching across different conditions and seasons.
-Improved Matching Accuracy with Deep Learning
+#### 1. **Multi-Spectral Image Support**  
+   - Integrate the capability to process and match multi-spectral data from Sentinel-2, leveraging its multiple bands (e.g., Red, Green, Blue, Near-Infrared) for more accurate feature extraction and matching across different conditions and seasons.
 
-    Fine-tune the SuperPoint and SuperGlue models for better matching accuracy under challenging scenarios, including cloudy or partially obscured images, by using more extensive training datasets or domain-specific fine-tuning.
-Geospatial Metadata Integration
+#### 2. **Improved Matching Accuracy with Deep Learning**  
+   - Fine-tune the **SuperPoint** and **SuperGlue** models for better matching accuracy under challenging scenarios, including cloudy or partially obscured images, by using more extensive training datasets or domain-specific fine-tuning.
 
-    Incorporate geospatial metadata (such as location coordinates, time, and sensor data) to enhance feature matching, allowing for more context-aware image comparisons and reducing false matches.
-Higher Resolution for Enhanced Detail
+#### 3. **Geospatial Metadata Integration**  
+   - Incorporate **geospatial metadata** (such as location coordinates, time, and sensor data) to enhance feature matching, allowing for more context-aware image comparisons and reducing false matches.
 
-    Increasing the resolution of input images allows for capturing finer details, leading to the detection of more keypoints. This is especially useful in areas where smaller features need to be identified for accurate matching.
+#### 4. **Higher Resolution for Enhanced Detail**  
+   - Increasing the resolution of input images allows for capturing finer details, leading to the detection of more keypoints. This is especially useful in areas where smaller features need to be identified for accurate matching.
 
 Results:
 

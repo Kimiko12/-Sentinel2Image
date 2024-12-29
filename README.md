@@ -14,7 +14,7 @@ This repository provides a robust solution for identifying similar Sentinel-2 sa
 Sentinel-2 images are provided in the `.SAFE` format containing `.jp2` (JPEG 2000) files. To ensure compatibility with the feature extraction and matching pipeline, the following preprocessing steps are performed:  
 - **Resampling**: Adjusts the spatial resolution to standardize pixel sizes.  
 - **Normalization**: Scales pixel intensity values to ensure uniformity across the dataset.  
-- **Resizing**: Reshapes images to a fixed resolution (256x256) for computational efficiency.  
+- **Resizing**: Reshapes images to a fixed resolution (224x224) for computational efficiency.  
 - **Format Conversion**: Converts `.jp2` files to `.jpeg` format for streamlined processing.  
 
 ---

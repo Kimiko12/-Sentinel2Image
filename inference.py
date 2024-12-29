@@ -134,13 +134,18 @@ class ImageMatching:
         return target_image_path, similar_image_path
 
 if __name__ == '__main__':
+    # Path to localy saved model weights
     model_weights_path = '/home/nikolay/test_task_quantum/Sentinel_2_image/SuperGlue_Weights/superglue_indoor.pth'
 
+    # Create instance of class
     matcher = ImageMatching(model_weights_path=model_weights_path, device=device)
 
+    # Provide 2 paths with descriptors 
     descriptor_path_1 = '/home/nikolay/test_task_quantum/Sentinel_2_image/data_superpoints/T36UXA_20180726T084009_B02.npz'
     descriptor_path_2 = '/home/nikolay/test_task_quantum/Sentinel_2_image/data_superpoints/T36UXA_20180726T084009_B08.npz'
 
+    # You can replace this line with actual paths to images 
     target_image_path, similar_image_path = matcher.find_image_paths(descriptor_path_1, descriptor_path_2)
 
+    # Run match_and_visualize function for visualize results of matching 
     matcher.match_and_visualize(descriptor_path_1, descriptor_path_2, target_image_path, similar_image_path)

@@ -7,7 +7,6 @@ import rasterio
 from rasterio.enums import Resampling
 from skimage.transform import resize
 
-# Настройка логирования
 logging.basicConfig(
     level=logging.INFO,
     format='[%(levelname)s] %(asctime)s - %(name)s - %(message)s'
@@ -97,7 +96,6 @@ class SentinelDataPreprocess:
             return image_uint8
         
 if __name__ == '__main__':
-    # Пример запуска
     input_data_path = '/mnt/c/Users/kolak/Downloads/archive'
     output_data_path = '/home/nikolay/test_task_quantum/Sentinel_2_image/data'
 

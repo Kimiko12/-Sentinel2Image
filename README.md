@@ -8,6 +8,8 @@ This repository provides a robust solution for identifying similar Sentinel-2 sa
 
 ### Project Workflow  
 
+#### Link on google drive with model weights and dataset: https://drive.google.com/drive/folders/1TJ0i8HkmOMWjQIMeQtR0PXWeHdGCSXtw?usp=drive_link
+
 #### 1. **Data Preprocessing**  
 ##### Implemented in `data_preprocess.py`  
 

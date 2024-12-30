@@ -17,7 +17,7 @@ This repository provides a robust solution for identifying similar Sentinel-2 sa
 ```
 Sentinel2ImageMatching/
 ├── data/                      # Raw and processed Sentinel-2 datasets
-├── model_checkpoints/         # Directory to save trained models
+├── SuperGlue_Weights          # Directory to save trained models
 ├── config.py                  # Configuration file for constants and hyperparameters
 ├── dataset.py                 # Custom dataset class for image matching
 ├── data_preprocess.py         # Data preprocessing utility script
@@ -29,7 +29,6 @@ Sentinel2ImageMatching/
 ├── utils.py                   # Utility functions and helpers
 ├── requirements.txt           # Python dependencies
 ├── README.md                  # Project documentation
-└── LICENSE                    # License information
 ```
 
 ---

@@ -9,9 +9,6 @@ This repository provides a robust solution for identifying similar Sentinel-2 sa
 - **Data Preprocessing**: Automates the preparation of Sentinel-2 `.SAFE` format images for analysis.
 - **Feature Extraction**: Utilizes SuperPoint for detecting keypoints and extracting robust descriptors.
 - **Keypoint Matching**: Employs SuperGlue, a graph neural network, for accurate feature matching between image pairs.
-- **Comprehensive Workflow**: Streamlined pipeline from raw data preprocessing to final image matching results.
-- **Flexible Configuration**: Easily adjustable parameters and modular components for customization and scalability.
-- **Visualization**: Generates visual representations of matched keypoints for intuitive result interpretation.
 
 ---
 

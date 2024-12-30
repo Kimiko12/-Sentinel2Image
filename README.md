@@ -1,223 +1,105 @@
-# Sentinel-2 Image Matching
+### Sentinel-2 Image Matching  
 
-This repository provides a robust solution for identifying similar Sentinel-2 satellite images captured at different time intervals, under varying seasonal conditions, and diverse weather scenarios. Leveraging state-of-the-art deep learning models for keypoint detection and feature matching, this project is ideal for applications such as environmental monitoring, urban planning, and disaster assessment.
+#### Overview  
 
----
-
-## Features
-
-- **Data Preprocessing**: Automates the preparation of Sentinel-2 `.SAFE` format images for analysis.
-- **Feature Extraction**: Utilizes SuperPoint for detecting keypoints and extracting robust descriptors.
-- **Keypoint Matching**: Employs SuperGlue, a graph neural network, for accurate feature matching between image pairs.
+This repository provides a comprehensive solution for identifying similar Sentinel-2 satellite images captured at different time intervals, under varying seasonal and weather conditions. It leverages state-of-the-art deep learning models for keypoint detection and feature matching, making it ideal for applications such as environmental monitoring, urban planning, and disaster assessment.
 
 ---
 
-## Project Structure
+### Project Workflow  
 
-```
-Sentinel2ImageMatching/
-├── data/                      # Raw and processed Sentinel-2 datasets
-├── SuperGlue_Weights          # Directory to save trained models
-├── config.py                  # Configuration file for constants and hyperparameters
-├── dataset.py                 # Custom dataset class for image matching
-├── data_preprocess.py         # Data preprocessing utility script
-├── SuperPoint.py              # Feature extraction script using SuperPoint
-├── SuperGlue_architecture.py  # Keypoint matching script using SuperGlue
-├── train_superpoint.py        # Training script for SuperPoint model
-├── train_superglue.py         # Training script for SuperGlue model
-├── inference.py               # Inference script for image matching
-├── utils.py                   # Utility functions and helpers
-├── requirements.txt           # Python dependencies
-├── README.md                  # Project documentation
-```
+#### Link to Model Weights and Dataset  
+Access the model weights and dataset here: [Google Drive Link](https://drive.google.com/drive/folders/1TJ0i8HkmOMWjQIMeQtR0PXWeHdGCSXtw?usp=drive_link)
+
+#### 1. **Data Preprocessing**  
+- **File**: `data_preprocess.py`  
+
+Sentinel-2 images in .SAFE format containing .jp2 (JPEG 2000) files undergo preprocessing for compatibility with the feature extraction and matching pipeline:  
+- **Resampling**: Standardizes pixel sizes by adjusting spatial resolution.  
+- **Normalization**: Scales pixel intensity values for uniformity across datasets.  
+- **Resizing**: Reshapes images to a fixed resolution (224x224) for efficiency.  
+- **Format Conversion**: Converts .jp2 files to .jpeg for streamlined processing.  
 
 ---
 
-## Getting Started
+#### 2. **Feature Extraction with SuperPoint**  
+- **File**: `SuperPoint.py`  
 
-### Accessing the Dataset and Model Weights
+SuperPoint, a deep learning-based model, detects keypoints and extracts descriptors from images, ensuring robustness to variations in:  
+- Scale  
+- Rotation  
+- Illumination  
 
-Download the dataset and pre-trained model weights from the following Google Drive link:
-
-[Google Drive - Sentinel-2 Image Matching Dataset and Model Weights](https://drive.google.com/drive/folders/1TJ0i8HkmOMWjQIMeQtR0PXWeHdGCSXtw?usp=drive_link)
-
-### Prerequisites
-
-- **Python**: Version 3.8 or higher
-- **GPU**: Recommended for accelerated training and processing
-- **Dependencies**: Listed in `requirements.txt`
-
-### Installation
-
-1. **Clone the Repository**
-
-   ```bash
-   git clone https://github.com/Kimiko12/Sentinel2Image.git
-   cd Sentinel2Image
-   ```
-
-2. **Install Dependencies**
-
-   Install the required Python packages using `pip`:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Download and Prepare Data**
-
-   Ensure that the downloaded datasets and model weights are placed in the appropriate directories as specified in the `config.py` file.
+These descriptors are crucial for accurate feature matching.  
 
 ---
 
-## Configuration
+#### 3. **Keypoint Matching with SuperGlue**  
+- **File**: `SuperGlue_architecture.py`  
 
-Configure hyperparameters and file paths by updating the `config.py` file:
+SuperGlue, a graph neural network (GNN), matches keypoints using:  
+- Attention mechanisms  
+- Contextual information  
 
-```python
-import torch
-
-DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-IMAGE_SIZE = (224, 224)
-BATCH_SIZE = 16
-EPOCHS_SUPERPOINT = 50
-EPOCHS_SUPERGLUE = 30
-SEED = 42
-LEARNING_RATE_SUPERPOINT = 1e-4
-LEARNING_RATE_SUPERGLUE = 1e-4
-MODEL_NAME_SUPERPOINT = 'superpoint_model'
-MODEL_NAME_SUPERGLUE = 'superglue_model'
-PATH_TO_MODEL_CHECKPOINTS = 'model_checkpoints/'
-DATA_PATH = 'data/'
-```
+This ensures accurate correspondences, even under significant seasonal, temporal, or atmospheric variations.  
 
 ---
 
-## Workflow
+### How to Use  
 
-### 1. Data Preprocessing
+#### Step 1: Clone the Repository  
+```bash
+git clone https://github.com/Kimiko12/Sentinel2Image.git
+```  
 
-**Script**: `data_preprocess.py`
+#### Step 2: Navigate to the Repository Folder  
+```bash
+cd Sentinel2Image
+```  
 
-Sentinel-2 images are provided in the `.SAFE` format containing `.jp2` (JPEG 2000) files. The preprocessing steps include:
+#### Step 3: Install Dependencies  
+Install the required Python packages:  
+```bash
+pip install -r requirements.txt
+```  
 
-- **Resampling**: Adjusts the spatial resolution to standardize pixel sizes.
-- **Normalization**: Scales pixel intensity values to ensure uniformity across the dataset.
-- **Resizing**: Reshapes images to a fixed resolution (224x224) for computational efficiency.
-- **Format Conversion**: Converts `.jp2` files to `.jpeg` format for streamlined processing.
-
+#### Step 4: Preprocess Images  
+Run the preprocessing script to convert .jp2 files to raster .jpeg images:  
 ```bash
 python data_preprocess.py
-```
+```  
 
-This script processes raw `.SAFE` datasets into standardized `.jpeg` images suitable for feature extraction.
-
-### 2. Feature Extraction with SuperPoint
-
-**Script**: `SuperPoint.py`
-
-- **SuperPoint** is a deep learning-based model designed for detecting keypoints and extracting descriptors from images.
-- Ensures robustness to changes in scale, rotation, and illumination, making it ideal for analyzing satellite imagery.
-- Each image undergoes keypoint detection, and corresponding descriptors are generated for further processing.
-
+#### Step 5: Feature Extraction with SuperPoint  
+Generate keypoints and descriptors from preprocessed images:  
 ```bash
 python SuperPoint.py
-```
+```  
 
-This script generates keypoints and descriptors for each preprocessed image, storing them for the matching phase.
-
-### 3. Keypoint Matching with SuperGlue
-
-**Script**: `SuperGlue_architecture.py`
-
-- **SuperGlue** is a graph neural network (GNN) tailored for feature matching, leveraging attention mechanisms and contextual information.
-- Establishes robust correspondences between keypoints in image pairs, ensuring accurate matching despite significant variations due to seasonal, temporal, or atmospheric changes.
-
+#### Step 6: Keypoint Matching with SuperGlue  
+Match keypoints by running:  
 ```bash
-python SuperGlue_architecture.py
-```
-
-This script matches keypoints between image pairs, producing matched keypoint pairs that indicate similar regions across different images.
+python inference.py
+```  
 
 ---
 
-## How to Use
+### Future Improvements  
 
-1. **Clone the Repository**
+1. **Multi-Spectral Image Support**  
+   - Extend support for Sentinel-2's multi-spectral data, including Red, Green, Blue, and Near-Infrared bands, for enhanced feature extraction and matching.  
 
-   ```bash
-   git clone https://github.com/Kimiko12/Sentinel2Image.git
-   cd Sentinel2Image
-   ```
+2. **Enhanced Matching Accuracy**  
+   - Fine-tune SuperPoint and SuperGlue models using domain-specific datasets to improve accuracy in challenging conditions like cloud cover or partial obstructions.  
 
-2. **Install Dependencies**
+3. **Geospatial Metadata Integration**  
+   - Use geospatial metadata (coordinates, time, and sensor details) to reduce false matches and enable context-aware comparisons.  
 
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Preprocess Images**
-
-   Run the preprocessing script to convert `.jp2` files into standardized `.jpeg` images:
-
-   ```bash
-   python data_preprocess.py
-   ```
-
-4. **Feature Extraction with SuperPoint**
-
-   Generate keypoints and descriptors from the preprocessed images:
-
-   ```bash
-   python SuperPoint.py
-   ```
-
-5. **Keypoint Matching with SuperGlue**
-
-   Perform feature matching between image pairs:
-
-   ```bash
-   python SuperGlue_architecture.py
-   ```
-
-6. **Inference and Visualization**
-
-   Use the `inference.py` script to obtain and visualize matching results between new image pairs:
-
-   ```python
-   from inference import ImageMatcher
-
-   matcher = ImageMatcher(model_path='model_checkpoints/', device='cuda')
-   image1_path = 'data/preprocessed/image1.jpeg'
-   image2_path = 'data/preprocessed/image2.jpeg'
-   matches = matcher.match_images(image1_path, image2_path)
-   matcher.visualize_matches(image1_path, image2_path, matches)
-   ```
-
-   **Expected Output:**
-
-   ![Matched Images Result](https://github.com/user-attachments/assets/35a0ac40-d63d-4026-8a0b-06ec68ff7681/matched_images_result_4.png)
+4. **Higher Image Resolution**  
+   - Support higher-resolution images for detailed analysis and detection of smaller features, enabling more precise keypoint matching.  
 
 ---
 
-## Future Improvements
+### Results  
 
-1. **Multi-Spectral Image Support**
-   - Integrate the capability to process and match multi-spectral data from Sentinel-2, leveraging its multiple bands (e.g., Red, Green, Blue, Near-Infrared) for more accurate feature extraction and matching across different conditions and seasons.
-
-2. **Improved Matching Accuracy with Deep Learning**
-   - Fine-tune the **SuperPoint** and **SuperGlue** models for better matching accuracy under challenging scenarios, including cloudy or partially obscured images, by using more extensive training datasets or domain-specific fine-tuning.
-
-3. **Geospatial Metadata Integration**
-   - Incorporate **geospatial metadata** (such as location coordinates, time, and sensor data) to enhance feature matching, allowing for more context-aware image comparisons and reducing false matches.
-
-4. **Higher Resolution for Enhanced Detail**
-   - Increase the resolution of input images to capture finer details, leading to the detection of more keypoints. This is especially useful in areas where smaller features need to be identified for accurate matching.
-
----
-
-## Results
-
-The system effectively matches Sentinel-2 images captured under varying conditions, demonstrating robust performance in keypoint detection and feature matching.
-
-![Matched Images Result](https://github.com/user-attachments/assets/35a0ac40-d63d-4026-8a0b-06ec68ff7681/matched_images_result_4.png)
+Below is an example of matched images:  
+![Matched Images Result](https://github.com/user-attachments/assets/35a0ac40-d63d-4026-8a0b-06ec68ff7681)  
